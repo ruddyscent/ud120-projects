@@ -31,14 +31,52 @@ plt.show()
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
 
-
-
-
-
-
-
-
 try:
     prettyPicture(clf, features_test, labels_test)
 except NameError:
     pass
+
+from time import time
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+print("k-Nearest Neighbors")
+t = time()
+cls = KNeighborsClassifier()
+cls.fit(features_train, labels_train)
+print("training time:", time() - t)
+
+t = time()
+labels_pred = cls.predict(features_test)
+print("predicting time:", time() - t)
+
+acc = accuracy_score(labels_test, labels_pred)
+print("accuarcy:", acc)
+
+print("AdaBoost")
+t = time()
+cls = AdaBoostClassifier()
+cls.fit(features_train, labels_train)
+print("training time:", time() - t)
+
+t = time()
+labels_pred = cls.predict(features_test)
+print("predicting time:", time() - t)
+
+acc = accuracy_score(labels_test, labels_pred)
+print("accuarcy:", acc)
+
+print("Random Forest")
+t = time()
+cls = RandomForestClassifier()
+cls.fit(features_train, labels_train)
+print("training time:", time() - t)
+
+t = time()
+labels_pred = cls.predict(features_test)
+print("predicting time:", time() - t)
+
+acc = accuracy_score(labels_test, labels_pred)
+print("accuarcy:", acc)
