@@ -53,7 +53,7 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
         ### use str.replace() to remove any instances of the words
         ### ["sara", "shackleton", "chris", "germani"]
         for i in ["sara", "shackleton", "chris", "germani"]:
-            parsed_email.replace(i, "")
+            parsed_email = parsed_email.replace(i, "")
 
         ### append the text to word_data
         word_data.append(parsed_email)
@@ -72,18 +72,13 @@ pickle.dump( from_data, open("your_email_authors.pkl", "wb") )
 # print(word_data[152])
 
 
-
+ 
 
 ### in Part 4, do TfIdf vectorization here
-from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
-from sklearn.feature_extraction.text import  TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 
-vectorizer = TfidfVectorizer(stop_words="english")
-
-for i in word_data:
-    for j in ENGLISH_STOP_WORDS:
-        i.replace(j, "")
-
+vectorizer = TfidfVectorizer(stop_words='english')
 bow = vectorizer.fit(word_data)
+print(bow.get_feature_names())
 print(len(bow.get_feature_names()))
 print(bow.get_feature_names()[34597])
