@@ -10,8 +10,8 @@ numpy.random.seed(42)
 ### mini-project.
 words_file = "../text_learning/your_word_data.pkl" 
 authors_file = "../text_learning/your_email_authors.pkl"
-word_data = pickle.load( open(words_file, "r"))
-authors = pickle.load( open(authors_file, "r") )
+word_data = pickle.load( open(words_file, "rb"))
+authors = pickle.load( open(authors_file, "rb") )
 
 
 
@@ -35,9 +35,28 @@ features_test  = vectorizer.transform(features_test).toarray()
 features_train = features_train[:150].toarray()
 labels_train   = labels_train[:150]
 
-
-
 ### your code goes here
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+import time
 
+t = time.time()
+cls = DecisionTreeClassifier()
+cls.fit(features_train, labels_train)
+labels_pred = cls.predict(features_test)
+accu = accuracy_score(labels_test, labels_pred)
+print('accuracy:', accu)
+print('time:', time.time() - t)
 
+importance = 0
+for n, i in enumerate(cls.feature_importances_):
+    if i > 0.2:
+        print("number:", n, "significance:", i)
+        
+    if i > importance:
+        importance = i
+        most_significant_word = n
+
+print("most significant word:",
+      vectorizer.get_feature_names()[most_significant_word])
 
