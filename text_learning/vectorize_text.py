@@ -41,35 +41,49 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
     for path in from_person:
         ### only look at first 200 emails when developing
         ### once everything is working, remove this line to run over full dataset
-        temp_counter += 1
-        if temp_counter < 200:
-            path = os.path.join('..', path[:-1])
-            print path
-            email = open(path, "r")
+        # temp_counter += 1
+        # if temp_counter < 200:
+        path = os.path.join('..', path[:-1])
+        print(path)
+        email = open(path, "r")
 
-            ### use parseOutText to extract the text from the opened email
+        ### use parseOutText to extract the text from the opened email
+        parsed_email = parseOutText(email)
 
-            ### use str.replace() to remove any instances of the words
-            ### ["sara", "shackleton", "chris", "germani"]
+        ### use str.replace() to remove any instances of the words
+        ### ["sara", "shackleton", "chris", "germani"]
+        for i in ["sara", "shackleton", "chris", "germani"]:
+            parsed_email.replace(i, "")
 
-            ### append the text to word_data
+        ### append the text to word_data
+        word_data.append(parsed_email)
 
-            ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+        ### append a 0 to from_data if email is from Sara, and 1 if email is from Chris
+        from_data.append({"sara": 0, "chris": 1}[name])
 
+        email.close()
 
-            email.close()
-
-print "emails processed"
+print("emails processed")
 from_sara.close()
 from_chris.close()
 
-pickle.dump( word_data, open("your_word_data.pkl", "w") )
-pickle.dump( from_data, open("your_email_authors.pkl", "w") )
-
+pickle.dump( word_data, open("your_word_data.pkl", "wb") )
+pickle.dump( from_data, open("your_email_authors.pkl", "wb") )
+# print(word_data[152])
 
 
 
 
 ### in Part 4, do TfIdf vectorization here
+from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS
+from sklearn.feature_extraction.text import  TfidfVectorizer
 
+vectorizer = TfidfVectorizer(stop_words="english")
 
+for i in word_data:
+    for j in ENGLISH_STOP_WORDS:
+        i.replace(j, "")
+
+bow = vectorizer.fit(word_data)
+print(len(bow.get_feature_names()))
+print(bow.get_feature_names()[34597])
