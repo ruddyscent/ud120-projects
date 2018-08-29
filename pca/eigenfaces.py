@@ -145,4 +145,4 @@ plot_gallery(eigenfaces, eigenface_titles, h, w)
 
 pl.show()
 
-print("variances:", pca.explained_variance_ratio_)
+# print("variances:", pca.explained_variance_ratio_)
